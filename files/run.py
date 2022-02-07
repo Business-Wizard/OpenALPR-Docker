@@ -112,8 +112,6 @@ def poll(alpr, input_url, output_url, interval, preprocessing_rules):
         image = download_image(input_url)
     except urllib.URLError:
         eprint("Failed to poll {}".format(input_url))
-        pass
-
     if image is not None:
         alpr_results = process_image(alpr, image, preprocessing_rules)
         json_data = json.dumps({"source": input_url, "results": alpr_results})
@@ -125,8 +123,6 @@ def poll(alpr, input_url, output_url, interval, preprocessing_rules):
             requests.post(output_url, data=json_data)
         except requests.exceptions.ConnectionError:
             eprint("Failed to POST data to {}".format(output_url))
-            pass
-
     s.enter(interval, 1, poll, (alpr, input_url, output_url, interval, preprocessing_rules))
 
 
